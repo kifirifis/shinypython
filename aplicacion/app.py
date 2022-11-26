@@ -1,4 +1,4 @@
-from shiny import App, render, ui
+from shiny import Inputs, Outputs, Session, App, reactive, render, req, ui
 from matplotlib import pyplot as plt
 from shiny.types import ImgData # Para el logo
 
