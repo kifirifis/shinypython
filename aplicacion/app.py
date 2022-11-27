@@ -43,29 +43,28 @@ def sim_steps(sim_number = 10, steps = 16, type = "float"):
 app_ui = ui.page_fluid(
         ui.layout_sidebar(
             ui.panel_sidebar(
-                ui.h2("Why normal distributions are normal"),
-                ui.input_slider("sample_size", "Sample Size", 1, 1000, 500),
-                ui.input_slider("steps", "Number of Steps", 1, 20, 16),
-                ui.input_select("step", "Step Type", {"float": "Float", "int": "Integer"}),
-                ui.input_slider("alpha", "Color Opacity", 0, 1, 0.2)
+                ui.h2("Porqué las distribuciones son normales"),
+                ui.input_slider("sample_size", "Tamaño de la muestra", 1, 1000, 500),
+                ui.input_slider("steps", "Número de pasos", 1, 20, 16),
+                ui.input_select("step", "Tipo de paso", {"float": "Float", "int": "Integer"}),
+                ui.input_slider("alpha", "Opacidad", 0, 1, 0.2)
             ),
         ui.panel_main(
             ui.output_plot("plot"),
             ui.markdown(
         """
-        ### Why normal distributions are normal
+        ### Por qué las distribuciones normales son normales
 
-        Chapter 3 of [Statistical Rethinking's](https://xcelab.net/rm/statistical-rethinking/) by Prop. Richard McElreath focuses on normal distribution
-        and its characteristics. It illustrates how to generate a normal distribution using the soccer field experiment:
+        El capítulo 3 de [Statistical Rethinking's] (https://xcelab.net/rm/statistical-rethinking/) del Prof. Richard McElreath se centra en la distribución normal
+        y sus características. Ilustra cómo generar una distribución normal utilizando el experimento del campo de fútbol:
 
-        - Place a bunch of people at the center line of a soccer field
-        - Each person flips a coin and moves one step to the right or left according to the outcome (head or tail)
-        - Repeat this process multiple times
-        After a couple of iterations, you will notice the distribution of the people's distances across the field will become Gaussian or normal (e.g., bell-curved shape).
+        - Coloca un grupo de personas en la línea central de un campo de fútbol
+        - Cada persona lanza una moneda y se mueve un paso a la derecha o a la izquierda según el resultado (cara o cruz)
+        - Repita este proceso varias veces
+        Después de un par de iteraciones, notará que la distribución de las distancias de las personas en el campo se volverá gaussiana o normal (por ejemplo, forma de campana).
 
-        The app above simulates this experience by setting the sample size (i.e., number of people) and number of iterations. Where on each iteration, we draw a random number between -1 and 1 (can choose between float integer steps with the `Step Type` drop-down). The plot above shows the cumulative sum of each experiment across each step of the experience. You can notice how the distribution becomes more Gaussin as the number of steps increases.
-
-        Code available [here](https://github.com/RamiKrispin/shinyelive).
+        La aplicación anterior simula esta experiencia al establecer el tamaño de la muestra (es decir, la cantidad de personas) y la cantidad de iteraciones. 
+        Donde en cada iteración, dibujamos un número aleatorio entre -1 y 1 (puede elegir entre pasos enteros flotantes con el menú desplegable 'Tipo de paso'). La gráfica anterior muestra la suma acumulada de cada experimento en cada paso de la experiencia. Puede notar cómo la distribución se vuelve más Gaussin a medida que aumenta el número de pasos.
 
         """
     ),
@@ -76,7 +75,7 @@ app_ui = ui.page_fluid(
 # Server
 def server(input, output, session):
     @output
-    @render.plot(alt="A simulation plot")
+    @render.plot(alt="Simulación")
     def plot():
         type = input.step()
         color = "lightblue"
@@ -89,10 +88,12 @@ def server(input, output, session):
             df = sim_df[sim_df["sim"] == i]
             ax.plot(df["step"], df["y"], color = color, alpha= alpha)
 
-        ax.set_title(label = "Simulation of Random Walk")
-        ax.set_xlabel("Number of Steps")
-        ax.set_ylabel("Position")
+        ax.set_title(label = "Simulación de un camino aleatorio")
+        ax.set_xlabel("Número de pasos")
+        ax.set_ylabel("Posición")
         return fig
 
 
 app = App(app_ui, server)
+
+# TODO Solucionar el utf-8 o latin1
